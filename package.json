@@ -4,6 +4,10 @@
   "description": "A powerful enum implementation to Javascript",
   "main": "index.js",
   "scripts": {
+    "build": "browserify index.js > dist/x-enum.js && uglifyjs dist/x-enum.js -cm > dist/x-enum.min.js",
+    "preversion": "npm test",
+    "version": "npm run build && git add --all dist",
+    "postversion": "git push && git push --tags",
     "test": "jest"
   },
   "repository": {
@@ -18,6 +22,8 @@
   },
   "homepage": "https://github.com/osmanpontes/x-enum#readme",
   "devDependencies": {
-    "jest-cli": "^0.8.2"
+    "browserify": "^13.0.0",
+    "jest-cli": "^0.8.2",
+    "uglify-js": "^2.6.1"
   }
 }

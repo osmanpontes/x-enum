@@ -1,0 +1,23 @@
+{
+  "name": "x-enum",
+  "version": "0.0.0",
+  "description": "A powerful enum implementation to Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmanpontes/x-enum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osmanpontes/x-enum/issues"
+  },
+  "homepage": "https://github.com/osmanpontes/x-enum#readme",
+  "devDependencies": {
+    "jest-cli": "^0.8.2"
+  }
+}

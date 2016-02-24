@@ -1,82 +1,12 @@
 var XenumElement = require('./xenum-element');
 
-function Xenum() {
-  var name, value, str, attrs, firstArgument, spec, count;
-
-  if (arguments.length !== 0) {
-
-    if (arguments.length === 1) {
-
-      firstArgument = arguments[0];
-
-      switch (typeof firstArgument) {
-        case 'string':
-          name = str = firstArgument;
-          value = 1;
-          this._addElement(name, value, str);
-          break;
-        case 'object':
-          if (Array.isArray(firstArgument)) {
-            firstArgument.forEach(function (item, index) {
-              switch (typeof item) {
-                case 'string':
-                  name = str = item;
-                  value = index + 1;
-                  break;
-                case 'object':
-                  str = item.name || item._str;
-                  name = value = item.id || item._value;
-                  break;
-              }
-              this[name] = new XenumElement(value, str);
-              this['_' + str] = this[name];
-              this['_' + value] = this[name];
-            }.bind(this));
-          } else {
-            count = 1;
-            for (name in firstArgument) {
-              spec = this._specByElemParams(name, firstArgument[name], count++);
-              this._addElement(name, spec.value, spec.str, spec.attrs);
-            }
-          }
-          break;
-      }
-
-    } else {
-
-      for (var i in arguments) {
-        switch (typeof arguments[i]) {
-          case 'string':
-            name = arguments[i];
-            value = +i + 1;
-            str = name;
-            break;
-
-          case 'object':
-            var obj = arguments[i];
-            name = Object.keys(obj)[0];
-            spec = this._specByElemParams(name, obj[name], i);
-            value = spec.value;
-            str = spec.str;
-            attrs = spec.attrs;
-            break;
-        }
-
-        this._addElement(name, value, str, attrs);
-      }
-
-    }
-  }
-  Object.freeze(this);
-}
-
-Xenum.prototype._addElement = function (name, value, str, attrs) {
+var _addElement = function (name, value, str, attrs) {
   this['_' + value] =
     this['_' + str] =
       this[name] = new XenumElement(value, str, attrs);
 };
 
-Xenum.prototype._specByElemParams = function (name, elemParams, index) {
+var _specByElemParams = function (name, elemParams, index) {
   if (elemParams instanceof Array) {
     var value, str, attrs;
     for (var j = 0; j < elemParams.length; j++) {
@@ -122,6 +52,76 @@ Xenum.prototype._specByElemParams = function (name, elemParams, index) {
     attrs: attrs
   };
 };
+
+function Xenum() {
+  var name, value, str, attrs, firstArgument, spec, count;
+
+  if (arguments.length !== 0) {
+
+    if (arguments.length === 1) {
+
+      firstArgument = arguments[0];
+
+      switch (typeof firstArgument) {
+        case 'string':
+          name = str = firstArgument;
+          value = 1;
+          _addElement.call(this, name, value, str);
+          break;
+        case 'object':
+          if (Array.isArray(firstArgument)) {
+            firstArgument.forEach(function (item, index) {
+              switch (typeof item) {
+                case 'string':
+                  name = str = item;
+                  value = index + 1;
+                  break;
+                case 'object':
+                  str = item.name || item._str;
+                  name = value = item.id || item._value;
+                  break;
+              }
+              this[name] = new XenumElement(value, str);
+              this['_' + str] = this[name];
+              this['_' + value] = this[name];
+            }.bind(this));
+          } else {
+            count = 1;
+            for (name in firstArgument) {
+              spec = _specByElemParams.call(this, name, firstArgument[name], count++);
+              _addElement.call(this, name, spec.value, spec.str, spec.attrs);
+            }
+          }
+          break;
+      }
+
+    } else {
+
+      for (var i in arguments) {
+        switch (typeof arguments[i]) {
+          case 'string':
+            name = arguments[i];
+            value = +i + 1;
+            str = name;
+            break;
+
+          case 'object':
+            var obj = arguments[i];
+            name = Object.keys(obj)[0];
+            spec = _specByElemParams.call(this, name, obj[name], i);
+            value = spec.value;
+            str = spec.str;
+            attrs = spec.attrs;
+            break;
+        }
+
+        _addElement.call(this, name, value, str, attrs);
+      }
+
+    }
+  }
+  Object.freeze(this);
+}
 
 Xenum.prototype.parse = function (value) {
   if (!Array.isArray(value)) {

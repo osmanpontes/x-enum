@@ -1,12 +1,12 @@
-jest.dontMock('../xenum');
-jest.dontMock('../xenum-element');
+jest.dontMock('../x-enum');
+jest.dontMock('../x-enum-element');
 
-var Xenum = require('../xenum');
+var XEnum = require('../x-enum');
 
-describe('Xenum', function () {
+describe('XEnum', function () {
 
   it('can receive string params', function () {
-    var e = new Xenum('AAA', 'BBB');
+    var e = new XEnum('AAA', 'BBB');
 
     expect(+e.AAA).toBe(1);
     expect(+e.BBB).toBe(2);
@@ -16,7 +16,7 @@ describe('Xenum', function () {
   });
 
   it('can receive one string', function () {
-    var e = new Xenum('AAA');
+    var e = new XEnum('AAA');
 
     expect(+e.AAA).toBe(1);
 
@@ -24,7 +24,7 @@ describe('Xenum', function () {
   });
 
   it('can receive an array', function () {
-    var e = new Xenum(['AAA', 'BBB']);
+    var e = new XEnum(['AAA', 'BBB']);
 
     expect(+e.AAA).toBe(1);
     expect(+e.BBB).toBe(2);
@@ -34,7 +34,7 @@ describe('Xenum', function () {
   });
 
   it('can receive objects with number', function () {
-    var e = new Xenum(
+    var e = new XEnum(
       {AAA: 3},
       {BBB: 7}
     );
@@ -47,7 +47,7 @@ describe('Xenum', function () {
   });
 
   it('can receive objects with string', function () {
-    var e = new Xenum(
+    var e = new XEnum(
       {AAA: 'A A A'},
       {BBB: 'B B B'}
     );
@@ -60,7 +60,7 @@ describe('Xenum', function () {
   });
 
   it('can receive objects with objects', function () {
-    var e = new Xenum(
+    var e = new XEnum(
       {AAA: {something: 5}},
       {BBB: {something: 10}}
     );
@@ -76,7 +76,7 @@ describe('Xenum', function () {
   });
 
   it('can receive objects with array of number, string and object', function () {
-    var e = new Xenum(
+    var e = new XEnum(
       {AAA: [4, 'A A A', {something: 5}]},
       {BBB: ['B B B', 7, {something: 10}]},
       {CCC: ['C C C', {something: 13}, 11]},
@@ -100,7 +100,7 @@ describe('Xenum', function () {
   });
 
   it('can receive one object describing one element', function () {
-    var e = new Xenum({
+    var e = new XEnum({
       AAA: [4, 'A A A', {something: 5}]
     });
 
@@ -110,7 +110,7 @@ describe('Xenum', function () {
   });
 
   it('can receive one object with all elements', function () {
-    var e = new Xenum({
+    var e = new XEnum({
       AAA: [4, 'A A A', {something: 5}],
       BBB: ['B B B', 7, {something: 10}],
       CCC: ['C C C', {something: 13}, 11],
@@ -131,5 +131,44 @@ describe('Xenum', function () {
     expect(e.BBB.something).toBe(10);
     expect(e.CCC.something).toBe(13);
     expect(e.DDD.something).toBe(19);
+  });
+
+  it('know if it contains some element', function () {
+    var e = new XEnum({AAA: 1, BBB: 2});
+    var e2 = new XEnum({AAA: 1, BBB: 2});
+
+    expect(e.contains(e.AAA)).toBeTruthy();
+    expect(e.contains(e.BBB)).toBeTruthy();
+
+    expect(e.contains(e2.AAA)).not.toBeTruthy();
+    expect(e.contains(e2.BBB)).not.toBeTruthy();
+  });
+
+  it('can parse number, string or XEnumElement', function () {
+    var e = new XEnum({AAA: [1, 'A A A']});
+
+    expect(e.parse(1)).toBe(e.AAA);
+    expect(e.parse('A A A')).toBe(e.AAA);
+    expect(e.parse(e.AAA)).toBe(e.AAA);
+  });
+
+  it('can get XEnumElements in a list', function () {
+    var e = new XEnum({AAA: 2, BBB: 1});
+
+    var expected = [e.BBB, e.AAA];
+
+    var list = e.getList().sort(function (o1, o2) {
+      return o1 - o2;
+    });
+
+    var orderedList = e.getOrderedList();
+
+    expect(list).toEqual(expected);
+    expect(list[0]).toBe(expected[0]);
+    expect(list[1]).toBe(expected[1]);
+
+    expect(orderedList).toEqual(expected);
+    expect(orderedList[0]).toBe(expected[0]);
+    expect(orderedList[1]).toBe(expected[1]);
   });
 });

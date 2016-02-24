@@ -1,4 +1,4 @@
-var XenumElement = require('./xenum-element');
+var XenumElement = require('./x-enum-element');
 
 var _addElement = function (name, value, str, attrs) {
   this['_' + value] =
@@ -53,7 +53,7 @@ var _specByElemParams = function (name, elemParams, index) {
   };
 };
 
-function Xenum() {
+function XEnum() {
   var name, value, str, attrs, firstArgument, spec, count;
 
   if (arguments.length !== 0) {
@@ -123,7 +123,7 @@ function Xenum() {
   Object.freeze(this);
 }
 
-Xenum.prototype.parse = function (value) {
+XEnum.prototype.parse = function (value) {
   if (!Array.isArray(value)) {
     return value !== null && typeof value !== 'undefined' ? this['_' + value.valueOf()] || null : null;
   }
@@ -132,21 +132,24 @@ Xenum.prototype.parse = function (value) {
   }.bind(this));
 };
 
-Xenum.prototype.getList = function () {
+XEnum.prototype.getList = function () {
   var list = [];
   for (var prop in this) {
     if (this.hasOwnProperty(prop) && typeof this[prop] === 'object' && prop.charAt(0) !== '_') {
       list.push(this[prop]);
     }
   }
-  list.sort(function (o1, o2) {
-    return o1 - o2;
-  });
   return list;
 };
 
-Xenum.prototype.contains = function (object) {
+XEnum.prototype.getOrderedList = function () {
+  return this.getList().sort(function (o1, o2) {
+    return o1 - o2;
+  });
+};
+
+XEnum.prototype.contains = function (object) {
   return this['_' + +object] === object;
 };
 
-module.exports = Xenum;
+module.exports = XEnum;

@@ -1,4 +1,4 @@
-function XenumElement(value, str, attrs) {
+function XEnumElement(value, str, attrs) {
   this._value = value;
   this._str = str;
   if (typeof attrs === 'object') {
@@ -16,11 +16,11 @@ function XenumElement(value, str, attrs) {
   Object.freeze(this);
 }
 
-XenumElement.prototype.valueOf = function () {
+XEnumElement.prototype.valueOf = function () {
   return this._value;
 };
-XenumElement.prototype.toString = function () {
+XEnumElement.prototype.toString = function () {
   return this._str;
 };
 
-module.exports = XenumElement;
+module.exports = XEnumElement;

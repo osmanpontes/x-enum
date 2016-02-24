@@ -1,3 +1,3 @@
-var Xenum = require('./src/xenum');
+var XEnum = require('./src/x-enum');
 
-module.exports = Xenum;
+module.exports = XEnum;

@@ -30,7 +30,7 @@ And use directly in the browser:
 ### A very simple example:
 
 ```js
-let Vowels = new Xenum('a', 'e', 'i', 'o', 'u');
+let Vowels = new XEnum('a', 'e', 'i', 'o', 'u');
 
 console.log(Vowels.a.valueOf()); // 1
 console.log(+Vowels.a); // 1
@@ -44,7 +44,7 @@ console.log(Vowels.u.toString()); // 'u'
 ### You can set a string different from element name:
 
 ```js
-let Colors = new Xenum(
+let Colors = new XEnum(
   {blue: 'Blue'},
   {lightBlue: 'Light Blue'}
 );
@@ -59,7 +59,7 @@ console.log(Colors.lightBlue.toString()); // 'Light Blue'
 ### You can set values manually
 
 ```js
-let Colors = new Xenum(
+let Colors = new XEnum(
   {blue: 4},
   {lightBlue: 10}
 );
@@ -74,7 +74,7 @@ console.log(Colors.lightBlue.toString()); // 'lightBlue'
 ### You can set new attributes to enum elements:
 
 ```js
-let Colors = new Xenum(
+let Colors = new XEnum(
   {blue: {type: 'foo'}},
   {lightBlue: {type: 'bar'}}
 );
@@ -91,7 +91,7 @@ console.log(Colors.lightBlue.type); // 'bar'
 ### Or you can set whatever you want:
 
 ```js
-let Colors = new Xenum(
+let Colors = new XEnum(
   {blue: [4, 'Blue', {type: 'foo'}]},
   {lightBlue: [10, 'Light Blue', {type: 'bar'}]},
   {red: [11, 'Red']}
@@ -113,7 +113,7 @@ console.log(Colors.red.type); // undefined
 ### If you want a little cleaner syntax:
 
 ```js
-let Colors = new Xenum({
+let Colors = new XEnum({
   blue: [4, 'Blue', {type: 'foo'}],
   lightBlue: [10, 'Light Blue', {type: 'bar'}],
   red: [11, 'Red']
@@ -123,7 +123,7 @@ let Colors = new Xenum({
 ## Note
 
 I've used it more than a year in production and it helped me a lot.
-I wish Xenum can be a good lib to you.
+I wish XEnum can be a good lib to you.
 
 ## License
 MIT

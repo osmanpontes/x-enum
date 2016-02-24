@@ -4,7 +4,7 @@
   "description": "A powerful enum implementation to Javascript",
   "main": "index.js",
   "scripts": {
-    "build": "browserify index.js > dist/x-enum.js && uglifyjs dist/x-enum.js -cm > dist/x-enum.min.js",
+    "build": "browserify index.js -s XEnum > dist/x-enum.js && uglifyjs dist/x-enum.js -cm > dist/x-enum.min.js",
     "preversion": "npm test",
     "version": "npm run build && git add --all dist",
     "postversion": "git push && git push --tags",

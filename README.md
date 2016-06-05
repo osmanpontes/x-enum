@@ -9,11 +9,11 @@ A powerful enum implementation to Javascript
 
 Then require it using CommonJS:
 
-`var Xenum = require('x-enum');`
+`var XEnum = require('x-enum');`
 
 Or import using ES6 syntax:
 
-`import Xenum from 'x-enum';`
+`import XEnum from 'x-enum';`
 
 ### To use in browser:
 

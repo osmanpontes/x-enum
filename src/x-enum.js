@@ -1,14 +1,14 @@
-var XenumElement = require('./x-enum-element');
+const XEnumElement = require('./x-enum-element');
 
-var _addElement = function (name, value, str, attrs) {
+const _addElement = function (name, value, str, attrs) {
   this['_' + value] =
     this['_' + str] =
-      this[name] = new XenumElement(value, str, attrs);
+      this[name] = new this.type(value, str, attrs);
 };
 
-var _specByElemParams = function (name, elemParams, index) {
+const _specByElemParams = function (name, elemParams, index) {
+  let value, str, attrs;
   if (elemParams instanceof Array) {
-    var value, str, attrs;
     for (var j = 0; j < elemParams.length; j++) {
       switch (typeof elemParams[j]) {
         case 'number':
@@ -46,15 +46,19 @@ var _specByElemParams = function (name, elemParams, index) {
     }
   }
 
-  return {
-    value: value,
-    str: str,
-    attrs: attrs
-  };
+  return {value, str, attrs};
 };
 
 function XEnum() {
-  var name, value, str, attrs, firstArgument, spec, count;
+  let name, value, str, attrs, firstArgument, spec, count;
+
+  // TODO maybe it can conflict with a element defined as Element
+  function type() {
+    XEnumElement.apply(this, arguments);
+  };
+  this.type = type;
+  this.type.prototype = Object.create(XEnumElement.prototype);
+  this.type.prototype.constructor = type;
 
   if (arguments.length !== 0) {
 
@@ -70,7 +74,7 @@ function XEnum() {
           break;
         case 'object':
           if (Array.isArray(firstArgument)) {
-            firstArgument.forEach(function (item, index) {
+            firstArgument.forEach((item, index) => {
               switch (typeof item) {
                 case 'string':
                   name = str = item;
@@ -81,10 +85,10 @@ function XEnum() {
                   name = value = item.id || item._value;
                   break;
               }
-              this[name] = new XenumElement(value, str);
+              this[name] = new XEnumElement(value, str);
               this['_' + str] = this[name];
               this['_' + value] = this[name];
-            }.bind(this));
+            });
           } else {
             count = 1;
             for (name in firstArgument) {
@@ -127,14 +131,12 @@ XEnum.prototype.parse = function (value) {
   if (!Array.isArray(value)) {
     return value !== null && typeof value !== 'undefined' ? this['_' + value.valueOf()] || null : null;
   }
-  return value.map(function (value) {
-    return this.parse(value);
-  }.bind(this));
+  return value.map(value => this.parse(value));
 };
 
 XEnum.prototype.getList = function () {
-  var list = [];
-  for (var prop in this) {
+  const list = [];
+  for (let prop in this) {
     if (this.hasOwnProperty(prop) && typeof this[prop] === 'object' && prop.charAt(0) !== '_') {
       list.push(this[prop]);
     }
@@ -143,9 +145,7 @@ XEnum.prototype.getList = function () {
 };
 
 XEnum.prototype.getOrderedList = function () {
-  return this.getList().sort(function (o1, o2) {
-    return o1 - o2;
-  });
+  return this.getList().sort((o1, o2) => o1 - o2);
 };
 
 XEnum.prototype.contains = function (object) {

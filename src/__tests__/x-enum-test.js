@@ -3,28 +3,10 @@ jest.dontMock('../x-enum-element');
 
 var XEnum = require('../x-enum');
 
-describe('XEnum', function () {
+describe('XEnum', () => {
 
-  it('can receive string params', function () {
-    var e = new XEnum('AAA', 'BBB');
-
-    expect(+e.AAA).toBe(1);
-    expect(+e.BBB).toBe(2);
-
-    expect(e.AAA.toString()).toBe('AAA');
-    expect(e.BBB.toString()).toBe('BBB');
-  });
-
-  it('can receive one string', function () {
-    var e = new XEnum('AAA');
-
-    expect(+e.AAA).toBe(1);
-
-    expect(e.AAA.toString()).toBe('AAA');
-  });
-
-  it('can receive an array', function () {
-    var e = new XEnum(['AAA', 'BBB']);
+  it('can receive string params', () => {
+    const e = new XEnum('AAA', 'BBB');
 
     expect(+e.AAA).toBe(1);
     expect(+e.BBB).toBe(2);
@@ -33,8 +15,26 @@ describe('XEnum', function () {
     expect(e.BBB.toString()).toBe('BBB');
   });
 
-  it('can receive objects with number', function () {
-    var e = new XEnum(
+  it('can receive one string', () => {
+    const e = new XEnum('AAA');
+
+    expect(+e.AAA).toBe(1);
+
+    expect(e.AAA.toString()).toBe('AAA');
+  });
+
+  it('can receive an array', () => {
+    const e = new XEnum(['AAA', 'BBB']);
+
+    expect(+e.AAA).toBe(1);
+    expect(+e.BBB).toBe(2);
+
+    expect(e.AAA.toString()).toBe('AAA');
+    expect(e.BBB.toString()).toBe('BBB');
+  });
+
+  it('can receive objects with number', () => {
+    const e = new XEnum(
       {AAA: 3},
       {BBB: 7}
     );
@@ -46,8 +46,8 @@ describe('XEnum', function () {
     expect(e.BBB.toString()).toBe('BBB');
   });
 
-  it('can receive objects with string', function () {
-    var e = new XEnum(
+  it('can receive objects with string', () => {
+    const e = new XEnum(
       {AAA: 'A A A'},
       {BBB: 'B B B'}
     );
@@ -59,8 +59,8 @@ describe('XEnum', function () {
     expect(e.BBB.toString()).toBe('B B B');
   });
 
-  it('can receive objects with objects', function () {
-    var e = new XEnum(
+  it('can receive objects with objects', () => {
+    const e = new XEnum(
       {AAA: {something: 5}},
       {BBB: {something: 10}}
     );
@@ -75,8 +75,8 @@ describe('XEnum', function () {
     expect(e.BBB.something).toBe(10);
   });
 
-  it('can receive objects with array of number, string and object', function () {
-    var e = new XEnum(
+  it('can receive objects with array of number, string and object', () => {
+    const e = new XEnum(
       {AAA: [4, 'A A A', {something: 5}]},
       {BBB: ['B B B', 7, {something: 10}]},
       {CCC: ['C C C', {something: 13}, 11]},
@@ -99,8 +99,8 @@ describe('XEnum', function () {
     expect(e.DDD.something).toBe(19);
   });
 
-  it('can receive one object describing one element', function () {
-    var e = new XEnum({
+  it('can receive one object describing one element', () => {
+    const e = new XEnum({
       AAA: [4, 'A A A', {something: 5}]
     });
 
@@ -109,8 +109,8 @@ describe('XEnum', function () {
     expect(e.AAA.something).toBe(5);
   });
 
-  it('can receive one object with all elements', function () {
-    var e = new XEnum({
+  it('can receive one object with all elements', () => {
+    const e = new XEnum({
       AAA: [4, 'A A A', {something: 5}],
       BBB: ['B B B', 7, {something: 10}],
       CCC: ['C C C', {something: 13}, 11],
@@ -133,9 +133,9 @@ describe('XEnum', function () {
     expect(e.DDD.something).toBe(19);
   });
 
-  it('know if it contains some element', function () {
-    var e = new XEnum({AAA: 1, BBB: 2});
-    var e2 = new XEnum({AAA: 1, BBB: 2});
+  it('know if it contains some element', () => {
+    const e = new XEnum({AAA: 1, BBB: 2});
+    const e2 = new XEnum({AAA: 1, BBB: 2});
 
     expect(e.contains(e.AAA)).toBeTruthy();
     expect(e.contains(e.BBB)).toBeTruthy();
@@ -144,24 +144,24 @@ describe('XEnum', function () {
     expect(e.contains(e2.BBB)).not.toBeTruthy();
   });
 
-  it('can parse number, string or XEnumElement', function () {
-    var e = new XEnum({AAA: [1, 'A A A']});
+  it('can parse number, string or XEnumElement', () => {
+    const e = new XEnum({AAA: [1, 'A A A']});
 
     expect(e.parse(1)).toBe(e.AAA);
     expect(e.parse('A A A')).toBe(e.AAA);
     expect(e.parse(e.AAA)).toBe(e.AAA);
   });
 
-  it('can get XEnumElements in a list', function () {
-    var e = new XEnum({AAA: 2, BBB: 1});
+  it('can get XEnumElements in a list', () => {
+    const e = new XEnum({AAA: 2, BBB: 1});
 
-    var expected = [e.BBB, e.AAA];
+    const expected = [e.BBB, e.AAA];
 
-    var list = e.getList().sort(function (o1, o2) {
+    const list = e.getList().sort(function (o1, o2) {
       return o1 - o2;
     });
 
-    var orderedList = e.getOrderedList();
+    const orderedList = e.getOrderedList();
 
     expect(list).toEqual(expected);
     expect(list[0]).toBe(expected[0]);
@@ -171,4 +171,15 @@ describe('XEnum', function () {
     expect(orderedList[0]).toBe(expected[0]);
     expect(orderedList[1]).toBe(expected[1]);
   });
+
+  it('can use instanceof XEnum.type(e)', () => {
+    const e = new XEnum({AAA: 2, BBB: 1});
+    const e2 = new XEnum({CCC: 3});
+
+    expect(e.AAA instanceof e.type).toBeTruthy();
+    expect(e.AAA instanceof e2.type).toBeFalsy();
+    expect(e2.CCC instanceof e2.type).toBeTruthy();
+    expect(e2.CCC instanceof e.type).toBeFalsy();
+  });
+
 });

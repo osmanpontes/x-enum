@@ -13,7 +13,6 @@ function XEnumElement(value, str, attrs) {
       this[prop] = attrs[prop];
     }
   }
-  // Object.freeze(this);
 }
 
 XEnumElement.prototype.valueOf = function () {

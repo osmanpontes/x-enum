@@ -6,7 +6,7 @@ var XEnum = require('../x-enum');
 describe('XEnum', () => {
 
   it('can receive string params', () => {
-    const e = new XEnum('AAA', 'BBB');
+    const e = XEnum('AAA', 'BBB');
 
     expect(+e.AAA).toBe(1);
     expect(+e.BBB).toBe(2);
@@ -16,7 +16,7 @@ describe('XEnum', () => {
   });
 
   it('can receive one string', () => {
-    const e = new XEnum('AAA');
+    const e = XEnum('AAA');
 
     expect(+e.AAA).toBe(1);
 
@@ -24,7 +24,7 @@ describe('XEnum', () => {
   });
 
   it('can receive an array', () => {
-    const e = new XEnum(['AAA', 'BBB']);
+    const e = XEnum(['AAA', 'BBB']);
 
     expect(+e.AAA).toBe(1);
     expect(+e.BBB).toBe(2);
@@ -34,7 +34,7 @@ describe('XEnum', () => {
   });
 
   it('can receive objects with number', () => {
-    const e = new XEnum(
+    const e = XEnum(
       {AAA: 3},
       {BBB: 7}
     );
@@ -47,7 +47,7 @@ describe('XEnum', () => {
   });
 
   it('can receive objects with string', () => {
-    const e = new XEnum(
+    const e = XEnum(
       {AAA: 'A A A'},
       {BBB: 'B B B'}
     );
@@ -60,7 +60,7 @@ describe('XEnum', () => {
   });
 
   it('can receive objects with objects', () => {
-    const e = new XEnum(
+    const e = XEnum(
       {AAA: {something: 5}},
       {BBB: {something: 10}}
     );
@@ -76,7 +76,7 @@ describe('XEnum', () => {
   });
 
   it('can receive objects with array of number, string and object', () => {
-    const e = new XEnum(
+    const e = XEnum(
       {AAA: [4, 'A A A', {something: 5}]},
       {BBB: ['B B B', 7, {something: 10}]},
       {CCC: ['C C C', {something: 13}, 11]},
@@ -100,7 +100,7 @@ describe('XEnum', () => {
   });
 
   it('can receive one object describing one element', () => {
-    const e = new XEnum({
+    const e = XEnum({
       AAA: [4, 'A A A', {something: 5}]
     });
 
@@ -110,7 +110,7 @@ describe('XEnum', () => {
   });
 
   it('can receive one object with all elements', () => {
-    const e = new XEnum({
+    const e = XEnum({
       AAA: [4, 'A A A', {something: 5}],
       BBB: ['B B B', 7, {something: 10}],
       CCC: ['C C C', {something: 13}, 11],
@@ -134,8 +134,8 @@ describe('XEnum', () => {
   });
 
   it('know if it contains some element', () => {
-    const e = new XEnum({AAA: 1, BBB: 2});
-    const e2 = new XEnum({AAA: 1, BBB: 2});
+    const e = XEnum({AAA: 1, BBB: 2});
+    const e2 = XEnum({AAA: 1, BBB: 2});
 
     expect(e.contains(e.AAA)).toBeTruthy();
     expect(e.contains(e.BBB)).toBeTruthy();
@@ -145,7 +145,7 @@ describe('XEnum', () => {
   });
 
   it('can parse number, string or XEnumElement', () => {
-    const e = new XEnum({AAA: [1, 'A A A']});
+    const e = XEnum({AAA: [1, 'A A A']});
 
     expect(e.parse(1)).toBe(e.AAA);
     expect(e.parse('A A A')).toBe(e.AAA);
@@ -153,7 +153,7 @@ describe('XEnum', () => {
   });
 
   it('can get XEnumElements in a list', () => {
-    const e = new XEnum({AAA: 2, BBB: 1});
+    const e = XEnum({AAA: 2, BBB: 1});
 
     const expected = [e.BBB, e.AAA];
 
@@ -172,14 +172,14 @@ describe('XEnum', () => {
     expect(orderedList[1]).toBe(expected[1]);
   });
 
-  it('can use instanceof XEnum.type(e)', () => {
-    const e = new XEnum({AAA: 2, BBB: 1});
-    const e2 = new XEnum({CCC: 3});
+  it('can use instanceof e', () => {
+    const e = XEnum({AAA: 2, BBB: 1});
+    const e2 = XEnum({CCC: 3});
 
-    expect(e.AAA instanceof e.type).toBeTruthy();
-    expect(e.AAA instanceof e2.type).toBeFalsy();
-    expect(e2.CCC instanceof e2.type).toBeTruthy();
-    expect(e2.CCC instanceof e.type).toBeFalsy();
+    expect(e.AAA instanceof e).toBeTruthy();
+    expect(e.AAA instanceof e2).toBeFalsy();
+    expect(e2.CCC instanceof e2).toBeTruthy();
+    expect(e2.CCC instanceof e).toBeFalsy();
   });
 
 });
